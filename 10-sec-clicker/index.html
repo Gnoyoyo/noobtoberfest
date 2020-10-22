@@ -11,7 +11,11 @@
 <body>
     <main>
         <div>
-            How many click that you can do in <span id="time-counter">10</span> sec.
+            How many seconds do you want to play? (Default is 10 sec) : 
+            <input type="text" id="seconds-amount" onchange="assignTimeCounter()"><br>
+        </div>
+        <div>
+            How many click that you can do in <span id="time-counter"> <a id="secondcount"></a></span> sec.
         </div>
         <div>
             <div>Click : <span id="click-counter">0</span></div>
@@ -19,16 +23,22 @@
         </div>
         <div>
             <button id="start-btn">start</button>
+            <button id="click-btn">click</button>
             <button id="reset-btn">reset point</button>
         </div>
     </main>
 </body>
 <script>
     const ONE_SEC = 1000;
-    const START_TIME_COUNTER = 10; // 10 sec
     let isGameStart = false;
     let counter = 0;
     let highScore = 0;
+    let START_TIME_COUNTER = 10;
+
+    function assignTimeCounter() {
+        START_TIME_COUNTER = document.getElementById("seconds-amount").value;
+        document.getElementById("secondcount").innerHTML = START_TIME_COUNTER;
+    }
 
     function resetScore() {
         highScore = 0;
@@ -48,6 +58,8 @@
 
     function endGame() {
         isGameStart = false;
+        document.getElementById("start-btn").style.display = ``;
+        document.getElementById("click-btn").style.display = `none`;
         if (counter >= highScore) {
             highScore = counter;
         }
@@ -59,6 +71,8 @@
     const gameStart = () => {
         if (isGameStart) return;
         isGameStart = true;
+        document.getElementById("click-btn").style.display = ``;
+        document.getElementById("start-btn").style.display = `none`;
         counter = 0;
         document.getElementById(`click-counter`).textContent = counter;
         let timeCounter = START_TIME_COUNTER;
@@ -71,9 +85,10 @@
             }
         }, ONE_SEC)
     }
+    document.getElementById("click-btn").style.display = `none`;
     document.getElementById("start-btn").addEventListener('click', gameStart)
     document.getElementById("reset-btn").addEventListener('click', resetScore)
-    document.body.addEventListener('click', clickCounter)
+    document.getElementById("click-btn").addEventListener('click', clickCounter)
 </script>
 
 </html>
